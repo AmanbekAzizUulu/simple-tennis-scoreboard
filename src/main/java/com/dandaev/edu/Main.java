@@ -1,9 +1,7 @@
 package com.dandaev.edu;
 
-import com.dandaev.edu.entities.Game;
+import com.dandaev.edu.entities.GameSet;
 import com.dandaev.edu.entities.Player;
-
-import java.util.Scanner;
 
 /**
  * The type Main.
@@ -13,36 +11,49 @@ public class Main {
         Player firstPlayer = new Player("Aibek");
         Player secondPlayer = new Player("Eleonora");
 
-        Game game = new Game(firstPlayer, secondPlayer);
+        GameSet gameSet = new GameSet(firstPlayer, secondPlayer);
 
-        Scanner scanner = new Scanner(System.in);
+        // выиграть игру - 1
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
 
-        System.out.println("Pls, type in your choice");
-        System.out.println("1 --- score point to Player 1");
-        System.out.println("2 --- score point to Player 2");
+        // выиграть игру - 2
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
 
-        String userChoice;
+        // выиграть игру - 3
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
 
-        while (true) {
-            userChoice = scanner.nextLine();
-            if (("1").equals(userChoice)) {
-                game.scorePointTo(firstPlayer);
-                System.out.println(game.getTable());
-                if (game.isOver()) {
-                    System.out.println(game.getTable());
-                    break;
-                }
-                continue;
-            }
-            if (("2").equals(userChoice)){
-                game.scorePointTo(secondPlayer);
-                System.out.println(game.getTable());
-                if (game.isOver()) {
-                    System.out.println(game.getTable());
-                    break;
-                }
-                continue;
-            }
-        }
+        // выиграть игру - 4
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+
+        // выиграть игру - 5
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+
+        // выиграть игру - 6
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+        gameSet.pointWon(firstPlayer);
+
+        // выиграть сет
+
+
+        System.out.println(gameSet.getGameSetWinner());
+
+
     }
 }
