@@ -3,7 +3,7 @@ package com.dandaev.edu.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegularGame implements Game{
+public class RegularGame implements Game {
     private final Player firstPlayer;
     private final Player secondPlayer;
 
@@ -27,18 +27,13 @@ public class RegularGame implements Game{
     }
 
     public void scorePointTo(Player player) {
-        setNextGamePoint(player);
-    }
-
-    private void setNextGamePoint(Player player) {
         if (isOver) {
-            System.out.println("RegularGame`s Over");
-            return;
+            throw new IllegalStateException("Game`s already over");
         }
 
         // тут наверное не надо бросать исключение — такой ситуации вообще не должно происходить по идее
         if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
-            return;
+            throw new IllegalArgumentException("Unknown player");
         }
 
         // обработка ничьи
@@ -123,5 +118,18 @@ public class RegularGame implements Game{
 
     public Player getWinner() {
         return winner;
+    }
+
+    public Map<Player, GamePoint> getTable() {
+        return new HashMap<>(table);
+    }
+
+    public GamePoint [] getScore(){
+        GamePoint gamePoints[] = new GamePoint[2];
+
+        gamePoints[0] = table.get(firstPlayer);
+        gamePoints[1] = table.get(secondPlayer);
+
+        return gamePoints;
     }
 }

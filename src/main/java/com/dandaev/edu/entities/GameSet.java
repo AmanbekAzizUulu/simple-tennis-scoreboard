@@ -10,7 +10,7 @@ public class GameSet {
     private Game currentGame;
     private final Map<Player, Integer> gamesWonByPlayer;
 
-    private Player gameSetWinner;
+    private Player winner;
 
     private boolean isOver;
 
@@ -24,7 +24,7 @@ public class GameSet {
         this.gamesWonByPlayer.put(firstPlayer, Integer.valueOf(0));
         this.gamesWonByPlayer.put(secondPlayer, Integer.valueOf(0));
 
-        this.gameSetWinner = null;
+        this.winner = null;
     }
 
     public void pointWon(Player player){
@@ -50,34 +50,37 @@ public class GameSet {
         }
     }
 
-
     private boolean checkGameSetComplete(){
         int firstPlayerGameWinCount = gamesWonByPlayer.get(firstPlayer);
         int secondPlayerGameWinCount = gamesWonByPlayer.get(secondPlayer);
 
         // нормальное флоу сетов
         if (firstPlayerGameWinCount >= 6 && firstPlayerGameWinCount - secondPlayerGameWinCount >= 2){
-            gameSetWinner = firstPlayer;
+            winner = firstPlayer;
             return isOver = true;
         }
         if (secondPlayerGameWinCount >= 6 && secondPlayerGameWinCount - firstPlayerGameWinCount >= 2){
-            gameSetWinner = secondPlayer;
+            winner = secondPlayer;
             return isOver = true;
         }
         // тай-брейк флоу сетов
         if (firstPlayerGameWinCount == 7 && secondPlayerGameWinCount == 6){
-            gameSetWinner = firstPlayer;
+            winner = firstPlayer;
             return isOver = true;
         }
         if (secondPlayerGameWinCount == 7 && firstPlayerGameWinCount == 6){
-            gameSetWinner = secondPlayer;
+            winner = secondPlayer;
             return isOver = true;
         }
 
         return false;
     }
 
-    public Player getGameSetWinner() {
-        return gameSetWinner;
+    public Player getWinner() {
+        return winner;
+    }
+
+    public boolean isOver() {
+        return isOver;
     }
 }

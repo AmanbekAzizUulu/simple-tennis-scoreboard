@@ -24,20 +24,15 @@ public class TieBreakGame implements Game {
     }
 
     public void scorePointTo(Player player) {
-        increasePointsOf(player);
-    }
-
-
-    private void increasePointsOf(Player player) {
-        // если переданный в качестве аргумента объект не является ни firstPlayer ни secondPlayer
-        if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
-            System.out.println("");
-            return;
-        }
-
         // если игра окончена
         if (isOver) {
             System.out.println("Tie Break RegularGame`s Over");
+            return;
+        }
+
+        // если переданный в качестве аргумента объект не является ни firstPlayer ни secondPlayer
+        if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
+            System.out.println("");
             return;
         }
 
