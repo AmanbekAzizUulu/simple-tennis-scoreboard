@@ -11,86 +11,86 @@ public class RegularGame implements Game {
 
     private boolean isOver;
 
-    private final Map<Player, GamePoint> table;
+    private final Map<Player, GamePoint> pointsWinByPlayer;
 
     public RegularGame(Player firstPlayer, Player secondPlayer) {
+        if (firstPlayer == null || secondPlayer == null) {
+            throw new IllegalArgumentException("Player can't be null");
+        }
+        if (firstPlayer.equals(secondPlayer)) {
+            throw new IllegalArgumentException("Players must be different");
+        }
+
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
 
         this.winner = null;
         this.isOver = false;
 
-        this.table = new HashMap<>();
+        this.pointsWinByPlayer = new HashMap<>();
 
-        table.put(firstPlayer, GamePoint.LOVE);
-        table.put(secondPlayer, GamePoint.LOVE);
+        pointsWinByPlayer.put(firstPlayer, GamePoint.LOVE);
+        pointsWinByPlayer.put(secondPlayer, GamePoint.LOVE);
     }
 
+    @Override
     public void scorePointTo(Player player) {
         if (isOver) {
             throw new IllegalStateException("Game`s already over");
         }
 
-        // тут наверное не надо бросать исключение — такой ситуации вообще не должно происходить по идее
+        // бросаем исключение если по какой-либо причине в аргументы попал посторонний объект
         if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
             throw new IllegalArgumentException("Unknown player");
         }
 
         // обработка ничьи
-        if (table.get(firstPlayer) == GamePoint.FORTY && table.get(secondPlayer) == GamePoint.FORTY) {
+        if (pointsWinByPlayer.get(firstPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(secondPlayer) == GamePoint.FORTY) {
             if (player.equals(firstPlayer)) {
-                table.put(firstPlayer, GamePoint.ADVANTAGE);
+                pointsWinByPlayer.put(firstPlayer, GamePoint.ADVANTAGE);
                 return;
             } else if (player.equals(secondPlayer)) {
-                table.put(secondPlayer, GamePoint.ADVANTAGE);
+                pointsWinByPlayer.put(secondPlayer, GamePoint.ADVANTAGE);
                 return;
             }
         }
 
         // обработка победы или возврата в ничейную ситуацию
-        if (table.get(firstPlayer) == GamePoint.ADVANTAGE && table.get(secondPlayer) == GamePoint.FORTY) {
+        if (pointsWinByPlayer.get(firstPlayer) == GamePoint.ADVANTAGE && pointsWinByPlayer.get(secondPlayer) == GamePoint.FORTY) {
             if (player.equals(firstPlayer)) {
-                System.out.println("First Player Wins");
-
                 winner = firstPlayer;
                 isOver = true;
                 return;
             } else if (player.equals(secondPlayer)) {
                 // проставляется ничья
-                table.put(firstPlayer, GamePoint.FORTY);
-                table.put(secondPlayer, GamePoint.FORTY);
+                pointsWinByPlayer.put(firstPlayer, GamePoint.FORTY);
+                pointsWinByPlayer.put(secondPlayer, GamePoint.FORTY);
                 return;
             }
         }
-        if (table.get(firstPlayer) == GamePoint.FORTY && table.get(secondPlayer) == GamePoint.ADVANTAGE) {
+        if (pointsWinByPlayer.get(firstPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(secondPlayer) == GamePoint.ADVANTAGE) {
             if (player.equals(secondPlayer)) {
-                System.out.println("Second Player Wins");
-
                 winner = secondPlayer;
                 isOver = true;
                 return;
             } else if (player.equals(firstPlayer)) {
                 // проставляется ничья
-                table.put(firstPlayer, GamePoint.FORTY);
-                table.put(secondPlayer, GamePoint.FORTY);
+                pointsWinByPlayer.put(firstPlayer, GamePoint.FORTY);
+                pointsWinByPlayer.put(secondPlayer, GamePoint.FORTY);
                 return;
             }
         }
 
         // обработка выигрыша с отрывом
-        if ((table.get(firstPlayer) == GamePoint.FORTY && table.get(secondPlayer) == GamePoint.LOVE) || (table.get(firstPlayer) == GamePoint.FORTY && table.get(secondPlayer) == GamePoint.FIFTEEN) || (table.get(firstPlayer) == GamePoint.FORTY && table.get(secondPlayer) == GamePoint.THIRTY)) {
+        if ((pointsWinByPlayer.get(firstPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(secondPlayer) == GamePoint.LOVE) || (pointsWinByPlayer.get(firstPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(secondPlayer) == GamePoint.FIFTEEN) || (pointsWinByPlayer.get(firstPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(secondPlayer) == GamePoint.THIRTY)) {
             if (player.equals(firstPlayer)) {
-                System.out.println("First Player Wins");
-
                 winner = firstPlayer;
                 isOver = true;
                 return;
             }
         }
-        if ((table.get(secondPlayer) == GamePoint.FORTY && table.get(firstPlayer) == GamePoint.LOVE) || (table.get(secondPlayer) == GamePoint.FORTY && table.get(firstPlayer) == GamePoint.FIFTEEN) || (table.get(secondPlayer) == GamePoint.FORTY && table.get(firstPlayer) == GamePoint.THIRTY)) {
+        if ((pointsWinByPlayer.get(secondPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(firstPlayer) == GamePoint.LOVE) || (pointsWinByPlayer.get(secondPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(firstPlayer) == GamePoint.FIFTEEN) || (pointsWinByPlayer.get(secondPlayer) == GamePoint.FORTY && pointsWinByPlayer.get(firstPlayer) == GamePoint.THIRTY)) {
             if (player.equals(secondPlayer)) {
-                System.out.println("Second Player Wins");
-
                 winner = secondPlayer;
                 isOver = true;
                 return;
@@ -98,37 +98,39 @@ public class RegularGame implements Game {
         }
 
         // обработка получения очка
-        if (table.get(player) == GamePoint.LOVE) {
-            table.put(player, GamePoint.FIFTEEN);
+        if (pointsWinByPlayer.get(player) == GamePoint.LOVE) {
+            pointsWinByPlayer.put(player, GamePoint.FIFTEEN);
             return;
         }
-        if (table.get(player) == GamePoint.FIFTEEN) {
-            table.put(player, GamePoint.THIRTY);
+        if (pointsWinByPlayer.get(player) == GamePoint.FIFTEEN) {
+            pointsWinByPlayer.put(player, GamePoint.THIRTY);
             return;
         }
-        if (table.get(player) == GamePoint.THIRTY) {
-            table.put(player, GamePoint.FORTY);
+        if (pointsWinByPlayer.get(player) == GamePoint.THIRTY) {
+            pointsWinByPlayer.put(player, GamePoint.FORTY);
             return;
         }
     }
 
+    @Override
     public boolean isOver() {
         return isOver;
     }
 
+    @Override
     public Player getWinner() {
         return winner;
     }
 
-    public Map<Player, GamePoint> getTable() {
-        return new HashMap<>(table);
+    Map<Player, GamePoint> getPointsWinByPlayer() {
+        return new HashMap<>(pointsWinByPlayer);
     }
 
-    public GamePoint [] getScore(){
+    GamePoint[] getScore() {
         GamePoint gamePoints[] = new GamePoint[2];
 
-        gamePoints[0] = table.get(firstPlayer);
-        gamePoints[1] = table.get(secondPlayer);
+        gamePoints[0] = pointsWinByPlayer.get(firstPlayer);
+        gamePoints[1] = pointsWinByPlayer.get(secondPlayer);
 
         return gamePoints;
     }
