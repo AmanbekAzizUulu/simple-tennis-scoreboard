@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class UserServiceTest {
+class UserServiceTest {
     private UserService userService;
 
     @BeforeEach

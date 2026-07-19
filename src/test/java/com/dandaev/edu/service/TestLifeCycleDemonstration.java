@@ -3,7 +3,7 @@ package com.dandaev.edu.service;
 import org.junit.jupiter.api.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD) // этот режим тестирования является по умолчанию
-public class TestLifeCycleDemonstration {
+class TestLifeCycleDemonstration {
 
     private final int instanceId;
 
