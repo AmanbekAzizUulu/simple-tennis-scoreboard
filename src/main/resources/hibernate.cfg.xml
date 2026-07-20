@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Драйвер PostgreSQL -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+
+        <!-- URL подключения: jdbc:postgresql://хост:порт/имя_бд -->
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/tennis_scoreboard</property>
+
+        <!-- Учётные данные (лучше вынести в переменные окружения, но для старта можно так) -->
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">${DB_PASS:changeme}</property>
+
+        <!-- Диалект -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Схема по умолчанию  -->
+        <property name="hibernate.default_schema">tennis_scoreboard_main_schema</property>
+
+        <!-- Автоматическое управление схемой: create | update | validate -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Логирование SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+    </session-factory>
+</hibernate-configuration>
