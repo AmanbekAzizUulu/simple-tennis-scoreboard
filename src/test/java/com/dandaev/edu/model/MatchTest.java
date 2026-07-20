@@ -1,5 +1,9 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
 
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
+import com.dandaev.edu.exceptions.domain.MatchAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.MatchNotFinishedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -180,7 +184,7 @@ class MatchTest {
 
 
         assertThrows(
-                IllegalStateException.class,
+                MatchAlreadyFinishedException.class,
                 () -> increaseWonGameSetsByOne(firstPlayer)
         );
     }
@@ -195,7 +199,7 @@ class MatchTest {
         int setsBefore = match.getSetsWinByPlayers().get(firstPlayer);
 
         assertThrows(
-                IllegalStateException.class,
+                MatchAlreadyFinishedException.class,
                 () -> match.scorePointTo(secondPlayer)
         );
 
@@ -215,7 +219,7 @@ class MatchTest {
         assertEquals(firstPlayer, match.getWinner());
 
         assertThrows(
-                IllegalStateException.class,
+                MatchAlreadyFinishedException.class,
                 () -> match.scorePointTo(secondPlayer)
         );
 
@@ -226,7 +230,7 @@ class MatchTest {
     void shouldThrowExceptionForUnknownPlayer() {
         Player stranger = new Player("Stranger");
 
-        assertThrows(IllegalArgumentException.class, () -> increaseWonGameSetsByOne(stranger));
+        assertThrows(InvalidPlayerException.class, () -> increaseWonGameSetsByOne(stranger));
     }
 
     @Test
@@ -281,7 +285,7 @@ class MatchTest {
         Player stranger = new Player("Stranger");
 
         assertThrows(
-                IllegalArgumentException.class,
+                InvalidPlayerException.class,
                 () -> match.getSetsWonBy(stranger)
         );
     }

@@ -1,4 +1,7 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
+
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +18,10 @@ public class RegularGame implements Game {
 
     public RegularGame(Player firstPlayer, Player secondPlayer) {
         if (firstPlayer == null || secondPlayer == null) {
-            throw new IllegalArgumentException("Player can't be null");
+            throw new InvalidPlayerException("Player cannot be null");
         }
         if (firstPlayer.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Players must be different");
+            throw new InvalidPlayerException("Players must be different");
         }
 
         this.firstPlayer = firstPlayer;
@@ -36,12 +39,12 @@ public class RegularGame implements Game {
     @Override
     public void scorePointTo(Player player) {
         if (isOver) {
-            throw new IllegalStateException("Game`s already over");
+            throw new GameSetAlreadyFinishedException("Game`s already over");
         }
 
         // бросаем исключение если по какой-либо причине в аргументы попал посторонний объект
         if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Unknown player");
+            throw new InvalidPlayerException("Unknown player");
         }
 
         // обработка ничьи
@@ -122,7 +125,7 @@ public class RegularGame implements Game {
         return winner;
     }
 
-    Map<Player, GamePoint> getPointsWinByPlayer() {
+    public Map<Player, GamePoint> getPointsWinByPlayer() {
         return new HashMap<>(pointsWinByPlayer);
     }
 

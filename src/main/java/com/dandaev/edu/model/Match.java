@@ -1,4 +1,7 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
+
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
+import com.dandaev.edu.exceptions.domain.MatchAlreadyFinishedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,15 +15,15 @@ public class Match implements Game {
 
     private boolean isOver;
 
-    private GameSet gameSet;
+    private GameSet currentGameSet;
 
 
     public Match(Player firstPlayer, Player secondPlayer) {
         if (firstPlayer == null || secondPlayer == null) {
-            throw new IllegalArgumentException("Player can't be null");
+            throw new InvalidPlayerException("Player can't be null");
         }
         if (firstPlayer.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Players must be different");
+            throw new InvalidPlayerException("Players must be different");
         }
 
         this.firstPlayer = firstPlayer;
@@ -30,7 +33,7 @@ public class Match implements Game {
 
         this.isOver = false;
 
-        this.gameSet = new GameSet(firstPlayer, secondPlayer);
+        this.currentGameSet = new GameSet(firstPlayer, secondPlayer);
 
         this.setsWinByPlayers.put(firstPlayer, Integer.valueOf(0));
         this.setsWinByPlayers.put(secondPlayer, Integer.valueOf(0));
@@ -40,19 +43,19 @@ public class Match implements Game {
     @Override
     public void scorePointTo(Player player) {
         if (isOver) {
-            throw new IllegalStateException("Game`s already over");
+            throw new MatchAlreadyFinishedException();
         }
         if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Unknown player");
+            throw new InvalidPlayerException("Unknown player");
         }
 
-        gameSet.scorePointTo(player);
+        currentGameSet.scorePointTo(player);
 
-        if (gameSet.isOver()) {
-            Player gameSetWinner = gameSet.getWinner();
+        if (currentGameSet.isOver()) {
+            Player gameSetWinner = currentGameSet.getWinner();
             setsWinByPlayers.put(gameSetWinner, setsWinByPlayers.get(gameSetWinner) + 1);
             if (!checkMatchComplete()) {
-                gameSet = new GameSet(firstPlayer, secondPlayer);
+                currentGameSet = new GameSet(firstPlayer, secondPlayer);
             }
         }
     }
@@ -79,17 +82,31 @@ public class Match implements Game {
         return winner;
     }
 
-    Map<Player, Integer> getSetsWinByPlayers() {
+
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Player getSecondPlayer() {
+        return secondPlayer;
+    }
+
+    public Map<Player, Integer> getSetsWinByPlayers() {
         return setsWinByPlayers;
     }
 
-    int getSetsWonBy(Player player) {
-        Integer sets = setsWinByPlayers.get(player);
-
-        if (sets == null) {
-            throw new IllegalArgumentException("Unknown player");
+    public int getSetsWonBy(Player player) {
+        if (player == null) {
+            throw new InvalidPlayerException("Player cannot be null");
         }
-
+        Integer sets = setsWinByPlayers.get(player);
+        if (sets == null) {
+            throw new InvalidPlayerException("Unknown player");
+        }
         return sets;
+    }
+
+    public GameSet getCurrentGameSet() {
+        return currentGameSet;
     }
 }

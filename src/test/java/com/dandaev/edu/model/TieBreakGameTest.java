@@ -1,5 +1,7 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
 
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -237,7 +239,7 @@ class TieBreakGameTest {
         assertEquals(firstPlayer, game.getWinner());
 
         assertThrows(
-                IllegalStateException.class,
+                GameSetAlreadyFinishedException.class,
                 () -> game.scorePointTo(secondPlayer)
         );
 
@@ -617,7 +619,7 @@ class TieBreakGameTest {
 
         assertAll(() -> assertEquals(firstPlayer, tieBreakGame.getWinner()),
                 () -> assertTrue(tieBreakGame.isOver()),
-                () -> assertThrows(IllegalStateException.class,
+                () -> assertThrows(GameSetAlreadyFinishedException.class,
                         () -> tieBreakGame.scorePointTo(firstPlayer)));
     }
 
@@ -629,7 +631,7 @@ class TieBreakGameTest {
 
         assertAll(() -> assertEquals(secondPlayer, tieBreakGame.getWinner()),
                 () -> assertTrue(tieBreakGame.isOver()),
-                () -> assertThrows(IllegalStateException.class,
+                () -> assertThrows(GameSetAlreadyFinishedException.class,
                         () -> tieBreakGame.scorePointTo(secondPlayer)));
     }
 
@@ -637,7 +639,7 @@ class TieBreakGameTest {
     void shouldThrowExceptionForUnknownPlayer() {
         Player unknown = new Player("Stranger");
 
-        assertThrows(IllegalArgumentException.class, () -> tieBreakGame.scorePointTo(unknown));
+        assertThrows(InvalidPlayerException.class, () -> tieBreakGame.scorePointTo(unknown));
     }
 
     @Test
@@ -652,7 +654,7 @@ class TieBreakGameTest {
         boolean isOver = tieBreakGame.isOver();
 
         assertThrows(
-                IllegalStateException.class,
+                GameSetAlreadyFinishedException.class,
                 () -> tieBreakGame.scorePointTo(secondPlayer)
         );
 

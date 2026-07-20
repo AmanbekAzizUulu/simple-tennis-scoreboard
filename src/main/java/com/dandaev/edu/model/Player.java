@@ -1,4 +1,4 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
 
 public class Player {
     private final String name;
@@ -10,5 +10,9 @@ public class Player {
     @Override
     public String toString() {
         return "Player{ " + name + " }";
+    }
+
+    public String getName() {
+        return name;
     }
 }

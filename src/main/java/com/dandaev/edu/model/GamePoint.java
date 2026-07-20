@@ -1,4 +1,4 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
 
 public enum GamePoint {
     LOVE,

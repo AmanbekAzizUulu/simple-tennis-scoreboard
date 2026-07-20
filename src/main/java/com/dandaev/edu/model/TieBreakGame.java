@@ -1,4 +1,8 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
+
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
+
 
 public class TieBreakGame implements Game {
     private final Player firstPlayer;
@@ -11,10 +15,10 @@ public class TieBreakGame implements Game {
 
     public TieBreakGame(Player firstPlayer, Player secondPlayer) {
         if (firstPlayer == null || secondPlayer == null) {
-            throw new IllegalArgumentException("Player can't be null");
+            throw new InvalidPlayerException("Player can't be null");
         }
         if (firstPlayer.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Players must be different");
+            throw new InvalidPlayerException("Players must be different");
         }
 
         this.firstPlayer = firstPlayer;
@@ -32,12 +36,12 @@ public class TieBreakGame implements Game {
     public void scorePointTo(Player player) {
         // если игра окончена
         if (isOver) {
-            throw new IllegalStateException("Game`s already over");
+            throw new GameSetAlreadyFinishedException("Game Set is already over");
         }
 
         // если переданный в качестве аргумента объект не является ни firstPlayer ни secondPlayer
         if (!player.equals(firstPlayer) && !player.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Unknown player");
+            throw new InvalidPlayerException(player.getName());
         }
 
         // механика инкрементирования очка
@@ -67,16 +71,17 @@ public class TieBreakGame implements Game {
     public boolean isOver() {
         return isOver;
     }
+
     @Override
     public Player getWinner() {
         return winner;
     }
 
-    int getFirstPlayerPoints() {
+    public int getFirstPlayerPoints() {
         return firstPlayerPoints;
     }
 
-    int getSecondPlayerPoints() {
+    public int getSecondPlayerPoints() {
         return secondPlayerPoints;
     }
 }

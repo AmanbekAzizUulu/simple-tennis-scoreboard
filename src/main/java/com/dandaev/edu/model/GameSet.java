@@ -1,4 +1,7 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
+
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +22,10 @@ public class GameSet {
 
     public GameSet(Player firstPlayer, Player secondPlayer) {
         if (firstPlayer == null || secondPlayer == null) {
-            throw new IllegalArgumentException("Player can't be null");
+            throw new InvalidPlayerException("Player cannot be null");
         }
         if (firstPlayer.equals(secondPlayer)) {
-            throw new IllegalArgumentException("Players must be different");
+            throw new InvalidPlayerException("Players must be different");
         }
 
         this.firstPlayer = firstPlayer;
@@ -42,7 +45,7 @@ public class GameSet {
 
     public void scorePointTo(Player player) {
         if (isOver) {
-            throw new IllegalStateException("Game Set`s already over");
+            throw new GameSetAlreadyFinishedException("Game Set`s already over");
         }
 
         currentGame.scorePointTo(player);
@@ -98,7 +101,7 @@ public class GameSet {
         return isOver;
     }
 
-    Map<Player, Integer> getGamesWonByPlayer() {
+    public Map<Player, Integer> getGamesWonByPlayer() {
         return new HashMap<>(gamesWonByPlayer);
     }
 
@@ -109,4 +112,8 @@ public class GameSet {
     boolean isTieBreakGameActive() {
         return isTieBreakGameActive;
     }
+
+    public Game getCurrentGame() { return currentGame; }
+
+    public boolean isTieBreak() { return currentGame instanceof TieBreakGame; }
 }

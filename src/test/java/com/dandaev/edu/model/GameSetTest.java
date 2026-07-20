@@ -1,5 +1,7 @@
-package com.dandaev.edu.entities;
+package com.dandaev.edu.model;
 
+import com.dandaev.edu.exceptions.domain.GameSetAlreadyFinishedException;
+import com.dandaev.edu.exceptions.domain.InvalidPlayerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -223,7 +225,7 @@ class GameSetTest {
         winSet(firstPlayer);
 
         assertThrows(
-                IllegalStateException.class,
+                GameSetAlreadyFinishedException.class,
                 () -> gameSet.scorePointTo(secondPlayer)
         );
 
@@ -240,7 +242,7 @@ class GameSetTest {
         winSet(firstPlayer);
 
         assertThrows(
-                IllegalStateException.class,
+                GameSetAlreadyFinishedException.class,
                 () -> gameSet.scorePointTo(secondPlayer)
         );
     }
@@ -252,7 +254,7 @@ class GameSetTest {
         assertTrue(gameSet.isOver());
         assertEquals(firstPlayer, gameSet.getWinner());
 
-        assertThrows(IllegalStateException.class, () -> gameSet.scorePointTo(secondPlayer));
+        assertThrows(GameSetAlreadyFinishedException.class, () -> gameSet.scorePointTo(secondPlayer));
 
         assertEquals(firstPlayer, gameSet.getWinner());
     }
@@ -261,7 +263,7 @@ class GameSetTest {
     void shouldThrowExceptionForUnknownPlayer() {
         Player stranger = new Player("Stranger");
 
-        assertThrows(IllegalArgumentException.class, () -> gameSet.scorePointTo(stranger));
+        assertThrows(InvalidPlayerException.class, () -> gameSet.scorePointTo(stranger));
     }
 
     @Test

@@ -1,7 +1,7 @@
-package com.dandaev.edu.entities.helpers;
+package com.dandaev.edu.model.helpers;
 
-import com.dandaev.edu.entities.GameSet;
-import com.dandaev.edu.entities.Player;
+import com.dandaev.edu.model.GameSet;
+import com.dandaev.edu.model.Player;
 
 public class GameSetDSL {
     private Player firstPlayer;
